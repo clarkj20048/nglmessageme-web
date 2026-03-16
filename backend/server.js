@@ -17,7 +17,7 @@ async function startServer() {
 
   app.use(
     cors({
-      origin: process.env.CLIENT_ORIGIN || "https://nglmessagemeweb.vercel.app",
+      origin: process.env.CLIENT_ORIGIN || "https://nglmessageme-website.vercel.app",
       credentials: true,
     })
   );

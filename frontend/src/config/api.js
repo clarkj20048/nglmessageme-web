@@ -1,4 +1,4 @@
-const PROD_API_BASE_URL = "https://nglmessagemeweb.onrender.com";
+const PROD_API_BASE_URL = "https://nglmessageme-backend.onrender.com";
 const DEV_API_BASE_URL = "http://localhost:5000";
 
 const API_BASE_URL = (
