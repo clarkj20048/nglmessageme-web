@@ -4,10 +4,12 @@ const jwt = require("jsonwebtoken");
 
 const { requireAdminAuth } = require("../middleware/authMiddleware");
 const { sanitizeText } = require("../utils/validation");
+const { getAdminSeedConfig } = require("../utils/adminConfig");
 const {
   findAdminByEmail,
   listSubmittedMessages,
   deleteMessageById,
+  upsertAdmin,
 } = require("../utils/jsonStore");
 
 const router = express.Router();
@@ -21,14 +23,37 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Email and password are required." });
     }
 
-    const admin = await findAdminByEmail(email);
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      return res.status(500).json({ message: "Server misconfigured: JWT secret missing." });
+    }
+
+    let admin = await findAdminByEmail(email);
+    const seedConfig = getAdminSeedConfig();
+
     if (!admin) {
-      return res.status(401).json({ message: "Invalid credentials." });
+      const canSeed =
+        seedConfig.isValid && email === seedConfig.email && password === seedConfig.password;
+
+      if (!canSeed) {
+        return res.status(401).json({ message: "Invalid credentials." });
+      }
+
+      const passwordHash = await bcrypt.hash(seedConfig.password, 12);
+      admin = await upsertAdmin(seedConfig.email, passwordHash);
     }
 
     const isMatch = await bcrypt.compare(password, admin.passwordHash);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials." });
+      const canReset =
+        seedConfig.isValid && email === seedConfig.email && password === seedConfig.password;
+
+      if (!canReset) {
+        return res.status(401).json({ message: "Invalid credentials." });
+      }
+
+      const passwordHash = await bcrypt.hash(seedConfig.password, 12);
+      admin = await upsertAdmin(seedConfig.email, passwordHash);
     }
 
     const token = jwt.sign(
@@ -36,7 +61,7 @@ router.post("/login", async (req, res) => {
         adminId: admin._id,
         email: admin.email,
       },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: "8h" }
     );
 

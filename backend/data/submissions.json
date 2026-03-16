@@ -12,9 +12,9 @@
     {
       "_id": "dabf0a40-198a-497d-84e8-677682922c5f",
       "email": "admin@ngl.com",
-      "passwordHash": "$2a$12$4TnsJCVoXhgTG63icsLRzOvwD/B.8zL6/lUL0GJhukucYnO1HfwAe",
+      "passwordHash": "$2a$12$ueR1GUaupOo/eXsXVxygm.8CnSNzYdADC4k/Cw90MGSk0IvGIhaw6",
       "createdAt": "2026-03-16T05:39:21.628Z",
-      "updatedAt": "2026-03-16T05:51:05.283Z"
+      "updatedAt": "2026-03-16T06:55:10.534Z"
     }
   ]
 }

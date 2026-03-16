@@ -1,19 +1,18 @@
 const bcrypt = require("bcryptjs");
-const validator = require("validator");
-
+const { getAdminSeedConfig } = require("./adminConfig");
 const { upsertAdmin } = require("./jsonStore");
 
 async function ensureAdminSeed() {
-  const email = String(process.env.ADMIN_EMAIL || "").trim();
-  const password = String(process.env.ADMIN_PASSWORD || "").trim();
+  const { email, password, isValid, reason } = getAdminSeedConfig();
 
-  if (!email || !password) {
-    console.warn("ADMIN_EMAIL/ADMIN_PASSWORD not set; admin seed skipped.");
-    return;
-  }
-
-  if (!validator.isEmail(email)) {
-    console.warn("ADMIN_EMAIL is not a valid email address; admin seed skipped.");
+  if (!isValid) {
+    if (reason === "missing") {
+      console.warn("ADMIN_EMAIL/ADMIN_PASSWORD not set; admin seed skipped.");
+    } else if (reason === "invalid_email") {
+      console.warn("ADMIN_EMAIL is not a valid email address; admin seed skipped.");
+    } else {
+      console.warn("Admin seed configuration invalid; admin seed skipped.");
+    }
     return;
   }
 
