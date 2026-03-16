@@ -1,0 +1,20 @@
+{
+  "submissions": [],
+  "messages": [],
+  "admins": [
+    {
+      "_id": "206584b3-f849-4b95-a71e-51ce92998694",
+      "email": "admin@example.com",
+      "passwordHash": "$2a$12$h5JjQe4oIA9m4cx8YbYqEubKBE2oDGx4/JRz7T7RgcVgRLW9x.Icu",
+      "createdAt": "2026-03-05T05:45:59.672Z",
+      "updatedAt": "2026-03-05T05:45:59.672Z"
+    },
+    {
+      "_id": "dabf0a40-198a-497d-84e8-677682922c5f",
+      "email": "admin@ngl.com",
+      "passwordHash": "$2a$12$4TnsJCVoXhgTG63icsLRzOvwD/B.8zL6/lUL0GJhukucYnO1HfwAe",
+      "createdAt": "2026-03-16T05:39:21.628Z",
+      "updatedAt": "2026-03-16T05:51:05.283Z"
+    }
+  ]
+}
